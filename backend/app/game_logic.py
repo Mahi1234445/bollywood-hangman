@@ -18,7 +18,9 @@ class GameSession:
 
     @property
     def unique_letters(self) -> set[str]:
-        return {c for c in self.movie.title if c.isalpha()}
+        # Includes digits too, so titles like "Khiladi 786" require
+        # guessing each number just like a letter — nothing auto-reveals.
+        return {c for c in self.movie.title if c.isalnum()}
 
     @property
     def lives_left(self) -> int:
@@ -61,7 +63,9 @@ class GameSession:
         return {
             "game_id": self.game_id,
             "display": self.display_pattern(),
-            "hint": self.movie.hint,
+            "year": self.movie.year,
+            "genre": self.movie.genre,
+            "storyline": self.movie.storyline,
             "guessed_letters": sorted(self.guessed_letters),
             "incorrect_letters": incorrect,
             "wrong_count": self.wrong_count,

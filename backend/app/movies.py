@@ -19,34 +19,71 @@ logger = logging.getLogger("bollywood_hangman.movies")
 # ---------------------------------------------------------------------------
 # Local fallback dictionary. This is the source of truth until a real API
 # key is wired up, and stays as the safety net afterwards.
+# Each entry carries year / genre / storyline as separate fields so the
+# frontend can offer them as independent, clickable hints.
 # ---------------------------------------------------------------------------
 MOVIES: list[dict] = [
-    {"title": "SHOLAY", "hint": "1975 · Action/Drama"},
-    {"title": "DILWALE DULHANIA LE JAYENGE", "hint": "1995 · Romance"},
-    {"title": "LAGAAN", "hint": "2001 · Sports/Drama"},
-    {"title": "KABHI KHUSHI KABHIE GHAM", "hint": "2001 · Family Drama"},
-    {"title": "ZINDAGI NA MILEGI DOBARA", "hint": "2011 · Road Trip"},
-    {"title": "GULLY BOY", "hint": "2019 · Musical Drama"},
-    {"title": "ANDHADHUN", "hint": "2018 · Thriller"},
-    {"title": "QUEEN", "hint": "2013 · Comedy Drama"},
-    {"title": "DANGAL", "hint": "2016 · Sports/Biopic"},
-    {"title": "BAAHUBALI", "hint": "2015 · Epic Action"},
-    {"title": "OM SHANTI OM", "hint": "2007 · Reincarnation Drama"},
-    {"title": "3 IDIOTS", "hint": "2009 · Comedy Drama"},
-    {"title": "SWADES", "hint": "2004 · Drama"},
-    {"title": "CHAK DE INDIA", "hint": "2007 · Sports Drama"},
-    {"title": "BARFI", "hint": "2012 · Romance"},
-    {"title": "TAARE ZAMEEN PAR", "hint": "2007 · Drama"},
-    {"title": "PIKU", "hint": "2015 · Comedy Drama"},
-    {"title": "RANG DE BASANTI", "hint": "2006 · Drama"},
-    {"title": "KAL HO NAA HO", "hint": "2003 · Romance"},
-    {"title": "MASAAN", "hint": "2015 · Drama"},
-    {"title": "PYAAR KA PUNCHNAMA", "hint": "2011 · Comedy"},
-    {"title": "GOLMAAL", "hint": "2006 · Comedy"},
-    {"title": "DIL CHAHTA HAI", "hint": "2001 · Coming of Age"},
-    {"title": "PADMAAVAT", "hint": "2018 · Period Drama"},
-    {"title": "ARTICLE 15", "hint": "2019 · Crime Drama"},
+    {"title": "SHOLAY", "year": "1975", "genre": "Action/Drama",
+     "storyline": "Two small-time crooks are hired by a retired police officer to capture the ruthless bandit who destroyed his family."},
+    {"title": "DILWALE DULHANIA LE JAYENGE", "year": "1995", "genre": "Romance",
+     "storyline": "A carefree young man falls for a woman promised to someone else back home, and follows her across countries to win her family over."},
+    {"title": "LAGAAN", "year": "2001", "genre": "Sports/Drama",
+     "storyline": "Villagers under colonial rule wager their crushing tax burden on the outcome of a cricket match against their rulers."},
+    {"title": "KABHI KHUSHI KABHIE GHAM", "year": "2001", "genre": "Family Drama",
+     "storyline": "A wealthy family fractures when the elder son marries against his father's wishes, and the years-long rift threatens to break them apart for good."},
+    {"title": "ZINDAGI NA MILEGI DOBARA", "year": "2011", "genre": "Road Trip",
+     "storyline": "Three childhood friends take a bachelor road trip through Spain, each confronting a fear and a truth about their own life along the way."},
+    {"title": "GULLY BOY", "year": "2019", "genre": "Musical Drama",
+     "storyline": "A young man from Mumbai's slums discovers rap as a way to voice his frustrations and claw his way toward a bigger life."},
+    {"title": "ANDHADHUN", "year": "2018", "genre": "Thriller",
+     "storyline": "A blind pianist becomes an unwitting witness to a murder, and must decide how much to reveal to survive what he's stumbled into."},
+    {"title": "QUEEN", "year": "2013", "genre": "Comedy Drama",
+     "storyline": "Left at the altar days before her wedding, a sheltered woman goes on her planned honeymoon alone and discovers who she is outside her old life."},
+    {"title": "DANGAL", "year": "2016", "genre": "Sports/Biopic",
+     "storyline": "A former wrestler trains his daughters to become championship wrestlers, defying small-town expectations of what girls are allowed to become."},
+    {"title": "BAAHUBALI", "year": "2015", "genre": "Epic Action",
+     "storyline": "A young man raised outside his kingdom uncovers a buried royal legacy and a betrayal that shaped his family's fate."},
+    {"title": "OM SHANTI OM", "year": "2007", "genre": "Reincarnation Drama",
+     "storyline": "A junior actor killed while trying to save his secret love is reborn decades later, drawn back toward the people who wronged him."},
+    {"title": "3 IDIOTS", "year": "2009", "genre": "Comedy Drama",
+     "storyline": "Two friends search for their long-lost college roommate, whose free-spirited approach to learning once upended their rigid engineering school."},
+    {"title": "SWADES", "year": "2004", "genre": "Drama",
+     "storyline": "A NASA scientist returns to his childhood village in India and is quietly transformed by the community he thought he'd left behind for good."},
+    {"title": "CHAK DE INDIA", "year": "2007", "genre": "Sports Drama",
+     "storyline": "A disgraced former hockey captain gets a second chance by coaching the women's national team, and has to earn their trust from zero."},
+    {"title": "BARFI", "year": "2012", "genre": "Romance",
+     "storyline": "A deaf-mute young man's playful charm draws in two very different women, and his story becomes tangled with a missing-persons mystery years later."},
+    {"title": "TAARE ZAMEEN PAR", "year": "2007", "genre": "Drama",
+     "storyline": "A struggling young boy with dyslexia is written off by everyone until a new art teacher notices what his family and school have missed."},
+    {"title": "PIKU", "year": "2015", "genre": "Comedy Drama",
+     "storyline": "A stubborn elderly father, obsessed with his health, drags his exasperated daughter on a road trip that tests both their patience and their bond."},
+    {"title": "RANG DE BASANTI", "year": "2006", "genre": "Drama",
+     "storyline": "A group of carefree college friends are shaken out of their apathy while filming a documentary, and drift toward an act of real consequence."},
+    {"title": "KAL HO NAA HO", "year": "2003", "genre": "Romance",
+     "storyline": "A dying man secretly orchestrates a romance between his neighbor and her best friend, choosing to give away the happiness he can't keep."},
+    {"title": "MASAAN", "year": "2015", "genre": "Drama",
+     "storyline": "Two strangers in a small town on the Ganges each carry private shame and grief, their lives quietly intersecting against the weight of tradition."},
+    {"title": "PYAAR KA PUNCHNAMA", "year": "2011", "genre": "Comedy",
+     "storyline": "Three roommates' relationships slowly unravel, building to a legendary rant about the everyday absurdities of modern dating."},
+    {"title": "GOLMAAL", "year": "2006", "genre": "Comedy",
+     "storyline": "A group of friends' web of lies to their strict guardian spirals into escalating chaos neither they nor he can keep straight."},
+    {"title": "DIL CHAHTA HAI", "year": "2001", "genre": "Coming of Age",
+     "storyline": "Three lifelong friends drift apart over love and ego after college, and slowly find their way back to what held them together."},
+    {"title": "PADMAAVAT", "year": "2018", "genre": "Period Drama",
+     "storyline": "A queen's fabled beauty draws the obsession of a ruthless sultan, setting a proud kingdom on a collision course with siege and war."},
+    {"title": "ARTICLE 15", "year": "2019", "genre": "Crime Drama",
+     "storyline": "A city-raised police officer posted to a rural district uncovers a case that forces him to confront a caste divide he never had to see before."},
 ]
+
+# TMDb genre_ids are numeric and not included by name in the discover
+# response — this is the standard, stable movie-genre list TMDb uses.
+TMDB_GENRE_MAP: dict[int, str] = {
+    28: "Action", 12: "Adventure", 16: "Animation", 35: "Comedy",
+    80: "Crime", 99: "Documentary", 18: "Drama", 10751: "Family",
+    14: "Fantasy", 36: "History", 27: "Horror", 10402: "Music",
+    9648: "Mystery", 10749: "Romance", 878: "Science Fiction",
+    10770: "TV Movie", 53: "Thriller", 10752: "War", 37: "Western",
+}
 
 # TMDb discover endpoint, filtered to Hindi-language originals.
 # Set TMDB_API_KEY as an environment variable to activate this path.
@@ -56,7 +93,15 @@ TMDB_URL = "https://api.themoviedb.org/3/discover/movie"
 @dataclass
 class Movie:
     title: str
-    hint: str
+    year: str
+    genre: str
+    storyline: str
+
+
+def _genre_names(genre_ids: list[int]) -> str:
+    names = [TMDB_GENRE_MAP.get(gid) for gid in genre_ids]
+    names = [n for n in names if n]
+    return "/".join(names[:2]) if names else "Unknown"
 
 
 async def _fetch_from_tmdb(api_key: str | None) -> Movie | None:
@@ -80,10 +125,14 @@ async def _fetch_from_tmdb(api_key: str | None) -> Movie | None:
                 return None
             choice = random.choice(results)
             year = (choice.get("release_date") or "----")[:4]
+            genre = _genre_names(choice.get("genre_ids", []))
+            storyline = choice.get("overview") or "No storyline available for this one."
             logger.info("TMDb pick: %s (%s)", choice["title"], year)
             return Movie(
                 title=choice["title"].upper(),
-                hint=f"{year} · TMDb pick",
+                year=year,
+                genre=genre,
+                storyline=storyline,
             )
     except (httpx.HTTPError, KeyError, ValueError) as e:
         logger.warning(
@@ -96,7 +145,12 @@ async def _fetch_from_tmdb(api_key: str | None) -> Movie | None:
 
 def _fetch_from_dictionary() -> Movie:
     choice = random.choice(MOVIES)
-    return Movie(title=choice["title"], hint=choice["hint"])
+    return Movie(
+        title=choice["title"],
+        year=choice["year"],
+        genre=choice["genre"],
+        storyline=choice["storyline"],
+    )
 
 
 async def fetch_random_movie(tmdb_api_key: str | None = None) -> Movie:

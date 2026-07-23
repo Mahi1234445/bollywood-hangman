@@ -8,7 +8,9 @@ class GuessRequest(BaseModel):
 class GameStateResponse(BaseModel):
     game_id: str
     display: list[str]
-    hint: str
+    year: str
+    genre: str
+    storyline: str
     guessed_letters: list[str]
     incorrect_letters: list[str]
     wrong_count: int
