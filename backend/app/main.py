@@ -23,10 +23,10 @@ app = FastAPI(title="Bollywood Hangman API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # In-memory session store. Swap for Redis/DB once this needs to survive
 # restarts or scale past a single process.
 GAMES: dict[str, GameSession] = {}
@@ -74,7 +74,6 @@ def guess_letter(game_id: str, body: GuessRequest):
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
-
 # ---------------- Serve React in production ----------------
 from pathlib import Path
 from fastapi.staticfiles import StaticFiles
@@ -83,14 +82,26 @@ from fastapi.responses import FileResponse
 # Docker location
 FRONTEND_DIR = Path("/app/frontend/dist")
 
+print("=" * 60)
+print("Initial FRONTEND_DIR:", FRONTEND_DIR)
+print("Exists:", FRONTEND_DIR.exists())
+
 # Local development fallback
 if not FRONTEND_DIR.exists():
     FRONTEND_DIR = Path(__file__).resolve().parents[3] / "frontend" / "dist"
+    print("Using fallback path:", FRONTEND_DIR)
+    print("Fallback exists:", FRONTEND_DIR.exists())
+
+print("Final FRONTEND_DIR:", FRONTEND_DIR)
 
 if FRONTEND_DIR.exists():
+    print("Contents:", list(FRONTEND_DIR.iterdir()))
     assets_dir = FRONTEND_DIR / "assets"
+    print("Assets exists:", assets_dir.exists())
 
     if assets_dir.exists():
+        print("Asset files:", list(assets_dir.iterdir()))
+
         app.mount(
             "/assets",
             StaticFiles(directory=assets_dir),
@@ -100,3 +111,5 @@ if FRONTEND_DIR.exists():
     @app.get("/{full_path:path}")
     async def serve_react(full_path: str):
         return FileResponse(FRONTEND_DIR / "index.html")
+
+print("=" * 60)
