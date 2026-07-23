@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 
-const ROWS = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
+const ROWS = ["1234567890", "QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 
 export default function Keyboard({ guessedLetters, incorrectLetters, onGuess, disabled }) {
   useEffect(() => {
     function onKey(e) {
       const k = e.key.toUpperCase();
-      if (/^[A-Z]$/.test(k) && !disabled) onGuess(k);
+      if (/^[A-Z0-9]$/.test(k) && !disabled) onGuess(k);
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);

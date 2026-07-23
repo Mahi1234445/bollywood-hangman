@@ -71,11 +71,16 @@ export default function App() {
 
         {!loading && !error && faceChoiceMade && state && (
           <>
-            <StickFigure wrongCount={state.wrong_count} faceImage={faceImage} />
+            <StickFigure wrongCount={state.wrong_count} faceImage={faceImage} status={state.status} />
 
             {state.status === "playing" && (
               <>
-                <WordDisplay display={state.display} hint={state.hint} />
+                <WordDisplay
+                  display={state.display}
+                  year={state.year}
+                  genre={state.genre}
+                  storyline={state.storyline}
+                />
                 <Keyboard
                   guessedLetters={state.guessed_letters}
                   incorrectLetters={state.incorrect_letters}

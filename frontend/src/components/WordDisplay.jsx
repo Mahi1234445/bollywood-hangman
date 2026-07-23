@@ -1,17 +1,30 @@
 import { useState } from "react";
 
-export default function WordDisplay({ display, hint }) {
-  const [hintShown, setHintShown] = useState(false);
+export default function WordDisplay({ display, year, genre, storyline }) {
+  const [showGenre, setShowGenre] = useState(false);
+  const [showStory, setShowStory] = useState(false);
 
   return (
     <>
-      <button
-        className="hint-toggle"
-        onClick={() => setHintShown(true)}
-        disabled={hintShown}
-      >
-        {hintShown ? `CLUE · ${hint}` : "🎬 Tap for a clue"}
-      </button>
+      <div className="hints-row">
+        <button
+          className="hint-toggle"
+          onClick={() => setShowGenre(true)}
+          disabled={showGenre}
+        >
+          {showGenre ? `🎬 ${year} · ${genre}` : "🎬 Year & Genre"}
+        </button>
+        <button
+          className="hint-toggle"
+          onClick={() => setShowStory(true)}
+          disabled={showStory}
+        >
+          📖 Storyline
+        </button>
+      </div>
+
+      {showStory && <div className="storyline-box">{storyline}</div>}
+
       <div className="word-row">
         {display.map((ch, i) =>
           ch === " " ? (
