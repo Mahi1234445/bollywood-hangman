@@ -1,7 +1,9 @@
 import os
 import uuid
 from pathlib import Path
-
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -72,3 +74,29 @@ def guess_letter(game_id: str, body: GuessRequest):
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
+
+# ---------------- Serve React in production ----------------
+from pathlib import Path
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# Docker location
+FRONTEND_DIR = Path("/app/frontend/dist")
+
+# Local development fallback
+if not FRONTEND_DIR.exists():
+    FRONTEND_DIR = Path(__file__).resolve().parents[3] / "frontend" / "dist"
+
+if FRONTEND_DIR.exists():
+    assets_dir = FRONTEND_DIR / "assets"
+
+    if assets_dir.exists():
+        app.mount(
+            "/assets",
+            StaticFiles(directory=assets_dir),
+            name="assets",
+        )
+
+    @app.get("/{full_path:path}")
+    async def serve_react(full_path: str):
+        return FileResponse(FRONTEND_DIR / "index.html")
